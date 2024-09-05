@@ -13,6 +13,7 @@ This project involves developing a network packet sniffer tool that captures and
 
 - Python 3.x
 - `scapy` library
+- Download and install Npcap 
 
 ## Installation
 
