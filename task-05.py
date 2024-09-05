@@ -8,27 +8,30 @@ def packet_callback(packet):
         dst_ip = packet[scapy.IP].dst
         protocol = packet[scapy.IP].proto
 
-# Print IP and protocol information
+        # Print IP and protocol information
         print(f"Source IP: {src_ip} | Destination IP: {dst_ip} | Protocol: {protocol}")
 
-# Check if the packet has a TCP layer
+        # Save packet to file
+        scapy.wrpcap('captured_packets.pcap', packet, append=True)
+
+        # Check if the packet has a TCP layer
         if packet.haslayer(scapy.TCP):
             try:
                 # Extract and decode TCP payload if available
                 payload = packet[scapy.Raw].load
                 decoded_payload = payload.decode('utf-8', 'ignore')
-                print(f"TCP Payload")
+                print(f"TCP Payload: {decoded_payload}")
             except (IndexError, UnicodeDecodeError):
                 # Handle cases where payload is not present or cannot be decoded
                 print("Unable to decode TCP payload.")
 
-# Check if the packet has a UDP layer
+        # Check if the packet has a UDP layer
         elif packet.haslayer(scapy.UDP):
             try:
                 # Extract and decode UDP payload if available
                 payload = packet[scapy.Raw].load
                 decoded_payload = payload.decode('utf-8', 'ignore')
-                print(f"UDP Payload")
+                print(f"UDP Payload: {decoded_payload}")
             except (IndexError, UnicodeDecodeError):
                 # Handle cases where payload is not present or cannot be decoded
                 print("Unable to decode UDP payload.")
